@@ -5,6 +5,8 @@ sbt-application - application builder with ProGuard and JavaFX support
 
 If you want improve it, please send mail to sbt-android-mill at digimead.org. You will be added to the group. Please, feel free to add yourself to authors.
 
+A brief description - https://groups.google.com/forum/?fromgroups=#!searchin/simple-build-tool/JavaFX/simple-build-tool/3TaoCfOLKdE/OPLVjeLERQgJ
+
 ## Participate in the development ##
 
 Branches:
