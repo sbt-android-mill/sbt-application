@@ -1,20 +1,31 @@
+!.gitignore
+
 *.class
 *.log
 
-# sbt specific
-dist/*
-target/
+# Build directories #
+bin/
+boot/
+build/
+dist/
 lib_managed/
+project/target/
+project/project/target/
+project-*/
 src_managed/
-project/boot/
-project/plugins/project/
-project-dev/align/
+target/
 
-# Scala-IDE specific
-.scala_dependencies
+# Test infrastructure #
+test/
+*/src/test
 
-# Eclipse IDE
-.settings/
-.cache
-.project
-.classpath
+# Package files #
+*.jar
+*.war
+*.ear
+
+# Hidden and service files #
+*~
+.*
+_*
+*.sbt

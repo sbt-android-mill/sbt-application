@@ -1,7 +1,7 @@
 /**
  * sbt-application - application builder with ProGuard and JavaFX support
  *
- * Copyright (c) 2012 Alexey Aksenov ezh@ezh.msk.ru
+ * Copyright (c) 2012-2014 Alexey Aksenov ezh@ezh.msk.ru
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ package sbt.application
 import sbt._
 import sbt.Keys._
 
-object ApplicationKeys {
-  def appConf = config("application") extend (Compile)
+object Keys {
+  def ApplicationConf = config("application") extend (Compile)
 
   val applicationPackage = TaskKey[Option[String]]("application-package", "Defines the main package in application bundle")
   val applicationSuffix = SettingKey[String]("application-suffix")

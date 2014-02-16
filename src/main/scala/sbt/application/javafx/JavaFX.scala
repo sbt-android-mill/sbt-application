@@ -18,11 +18,10 @@
 
 package sbt.application.javafx
 
+import java.net.URLClassLoader
+import sbt.application.Keys._
 import sbt._
 import sbt.Keys._
-import sbt.application.ApplicationKeys._
-
-import java.net.URLClassLoader
 
 object JavaFX {
   /** JavaFX plugin settings */
@@ -36,23 +35,23 @@ object JavaFX {
     javafxSuffix := "-jfx")
 
   /** user's project dependency container with JavaFX */
-  def dependencySettings = Seq(unmanagedJars in Compile <++= (javafxEnabled in appConf, javafxRT in appConf) map {
-    case (true, javafxRT) =>
+  def dependencySettings = Seq(unmanagedJars in Compile <++= (javafxEnabled in ApplicationConf, javafxRT in ApplicationConf) map {
+    case (true, javafxRT) ⇒
       if (javafxRT.isEmpty)
         sys.error("Please, provide classpath for javafx")
       javafxRT
-    case (false, javafxRT) => Seq()
+    case (false, javafxRT) ⇒ Seq()
   })
   /** generate JavaFX artifact name*/
   def javafxArtifactTask = (javafxSuffix, sbt.Keys.`package` in Compile) map {
-    (javafxSuffix, originalArtifact) =>
+    (javafxSuffix, originalArtifact) ⇒
       val name = originalArtifact.getName.split("""\.""")
       new File(originalArtifact.getParent, name.dropRight(1).mkString(".") +
         Seq(javafxSuffix, name.last).mkString("."))
   }
   /** try to generate classpath for JavaFX at default location */
   def javafxRTTask: Project.Initialize[Task[Classpath]] = (streams) map {
-    (streams) =>
+    (streams) ⇒
       val home = new File(System.getProperty("java.home"))
       val result = if (!home.exists()) {
         streams.log.warn("Java home not exists")
@@ -78,7 +77,7 @@ object JavaFX {
   }
   /** */
   def javafxAntTask: Project.Initialize[Task[Classpath]] = (streams) map {
-    (streams) =>
+    (streams) ⇒
       val home = new File(System.getProperty("java.home"))
       val result = if (!home.exists()) {
         streams.log.warn("Java home not exists")
@@ -104,18 +103,18 @@ object JavaFX {
   }
   def javafxTask(): Project.Initialize[Task[Option[File]]] = (javafxAnt, javafxArtifact, javefxArtifactType,
     mainClass, sbt.Keys.`package` in Compile, proguard, streams) map {
-      (javafxAnt, javafxArtifact, javefxArtifactType, mainClass, originalArtifact, proguard, streams) =>
+      (javafxAnt, javafxArtifact, javefxArtifactType, mainClass, originalArtifact, proguard, streams) ⇒
         if (javafxAnt.isEmpty)
           sys.error("Path to ant-javafx.jar not defined.")
         val classLoader = new URLClassLoader(Array(javafxAnt.head.data.toURI().toURL()), getClass().getClassLoader())
         val antProject = new org.apache.tools.ant.Project()
         javefxArtifactType match {
-          case FXJar =>
+          case FXJar ⇒
             val task = new FXJarTask(antProject, classLoader)
             task.setVerbose(true)
             task.setDestfile(javafxArtifact.getAbsolutePath())
             IO.withTemporaryDirectory {
-              dir =>
+              dir ⇒
                 val source = proguard getOrElse originalArtifact
                 streams.log.info("Extracting " + source.getName + " to " + dir)
                 IO.unzip(source, dir)
@@ -128,7 +127,7 @@ object JavaFX {
                 task.execute()
             }
             Some(javafxArtifact)
-          case FXDeploy =>
+          case FXDeploy ⇒
             throw new UnsupportedOperationException
         }
     }

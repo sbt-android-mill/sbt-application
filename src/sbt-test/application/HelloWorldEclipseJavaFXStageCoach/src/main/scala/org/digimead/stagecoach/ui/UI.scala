@@ -214,7 +214,7 @@ class UI extends Application {
   }
   /**
    * little wrapper that negate effect of Java <B extends T<B>>
-   * and prevent to crush Scala compiler
+   * and prevents to crush Scala compiler
    */
   def <>[T, S](b: Builder[_])(f: T => S)(implicit m: Manifest[T]) = f(b.asInstanceOf[T])
 }

@@ -1,7 +1,7 @@
 /**
  * sbt-application - application builder with ProGuard and JavaFX support
  *
- * Copyright (c) 2012 Alexey Aksenov ezh@ezh.msk.ru
+ * Copyright (c) 2012-2014 Alexey Aksenov ezh@ezh.msk.ru
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import proguard.ProGuard
 import sbt._
 import sbt.IO._
 import sbt.Keys._
-import sbt.application.ApplicationKeys._
+import sbt.application.Keys._
 
 object Proguard {
   /** ProGuard plugin settings */

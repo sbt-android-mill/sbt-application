@@ -1,7 +1,7 @@
 /**
  * sbt-application - application builder with ProGuard and JavaFX support
  *
- * Copyright (c) 2012 Alexey Aksenov ezh@ezh.msk.ru
+ * Copyright (c) 2012-2014 Alexey Aksenov ezh@ezh.msk.ru
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,28 +18,34 @@
 
 package sbt.application
 
-import sbt._
-import sbt.Keys._
-import sbt.application.ApplicationKeys._
+import sbt.application.Keys._
 import sbt.application.javafx.JavaFX
 import sbt.application.proguard.Proguard
+import sbt.Keys._
+import sbt._
 
 /**
  * sbt-application plugin entry
  */
 object Plugin extends sbt.Plugin {
-  /** default plugin settings */
+  /** Default plugin settings */
   val pluginSettings = Seq(
+    applicationPackage := None,
+    applicationSuffix := "",
+    applicationLibraries := Seq(),
+    mainClass := None)
+  /** Default plugin settings with packager. */
+  val pluginSettingsWithPackager = Seq(
     applicationPackage <<= (mainClass) map { _.map(_.split("""\.""").dropRight(1).mkString(".")) },
     applicationSuffix := "-app",
     applicationLibraries := Seq(),
     sbt.Keys.`package` <<= packageTask)
 
-  /** entry point for plugin in user's project */
-  def activate: Seq[Project.Setting[_]] = inConfig(appConf)(pluginSettings ++ Proguard.settings ++ JavaFX.settings) ++ JavaFX.dependencySettings
+  def defaultSettings: Seq[Project.Setting[_]] = inConfig(ApplicationConf)(pluginSettings ++ Proguard.settings ++ JavaFX.settings) ++ JavaFX.dependencySettings
+  def defaultSettingsWithPackager: Seq[Project.Setting[_]] = inConfig(ApplicationConf)(pluginSettingsWithPackager ++ Proguard.settings ++ JavaFX.settings) ++ JavaFX.dependencySettings
   /** main task */
-  def packageTask = (sbt.Keys.`package` in Compile, ApplicationKeys.proguard, ApplicationKeys.javafx, applicationLibraries) map {
-    (originalArtifact, proguard, javafx, applicationLibraries) =>
+  def packageTask = (sbt.Keys.`package` in Compile, Keys.proguard, Keys.javafx, applicationLibraries) map {
+    (originalArtifact, proguard, javafx, applicationLibraries) ⇒
       val source = proguard getOrElse originalArtifact
       source
   }

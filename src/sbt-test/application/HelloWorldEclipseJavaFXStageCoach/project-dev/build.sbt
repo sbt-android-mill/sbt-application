@@ -37,7 +37,7 @@ sourceDirectory <<= (baseDirectory) (_ / ".." / "src")
 
 target <<= (baseDirectory) (_ / ".." / "target")
 
-dependencyPath <<= (baseDirectory) map (_ / "deps")
+dependencyOutput <<= (baseDirectory) map (_ / "deps")
 
 //dependenciesSkipOrganization := Seq()
 
